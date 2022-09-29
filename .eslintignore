@@ -1,0 +1,13 @@
+node_modules
+
+.history
+.build
+.vscode
+.idea
+.husky
+
+cdk.out
+coverage/
+dist
+
+junit.xml
