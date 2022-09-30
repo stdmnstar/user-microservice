@@ -1,9 +1,27 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity()
-export class User {
-  @PrimaryGeneratedColumn()
+export interface IUserRequest {
+  email: string;
+  firstName: string;
+  lastName: string;
+  isObfuscated?: boolean;
+  globalId?: string;
+}
+
+export interface IUser {
   id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  isObfuscated: boolean;
+  globalId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+@Entity()
+class User implements IUser {
+  @PrimaryGeneratedColumn()
+  id!: number;
 
   @Column()
   email: string;
@@ -21,8 +39,24 @@ export class User {
   globalId: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
+
+  constructor({
+    email = 'email',
+    firstName = 'firstName',
+    lastName = 'lastName',
+    isObfuscated = false,
+    globalId = '0'
+  }: Partial<IUser> = {}) {
+    this.email = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.isObfuscated = isObfuscated;
+    this.globalId = globalId;
+  }
 }
+export default User;
+

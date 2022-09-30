@@ -1,23 +1,26 @@
 import { AppDataSource } from './data-source';
-import { User } from './entity/User';
+// import { IUser } from './entity/user';
+
+import userService from './service/user';
+
+
 
 AppDataSource.initialize()
   .then(async () => {
-    console.log('Inserting a new user into the database...');
-    const user = new User();
-    user.firstName = 'Timber';
-    user.lastName = 'Saw';
-    user.email = 'ddddd@gm.com';
-    user.isObfuscated = false;
-    user.globalId = '0';
+  
+    // const userBody: IUserRequest = {
+    //   email: 'ggg@g.com',
+    //   firstName: 'Alexfffff2',
+    //   lastName: 'Saw',
+    //   isObfuscated: false,
+    //   globalId: '0'
+    // }
+    // const newUser = new User(userBody);
 
-    await AppDataSource.manager.save(user);
-    console.log(`Saved a new user with id: ${user.id}`);
+    // const user = await userService.create(newUser)
+    // console.log(`Saved a new user : ${user}`);
 
-    console.log('Loading users from the database...');
-    const users = await AppDataSource.manager.find(User);
-    console.log('Loaded users: ', users);
-
-    console.log('Here you can setup and run express / fastify / any other framework.');
+    const user = await userService.obfuscate(4)
+    console.log('Update a new user : ', user);
   })
   .catch((error) => console.log(error));
