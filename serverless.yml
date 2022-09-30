@@ -6,12 +6,16 @@ provider:
   runtime: nodejs12.x
 
 functions:
-  deleteOn:
-    handler: src/function/user.deleteOn
+  deleteOne:
+    handler: src/function/deleteUser/handler.deleteOne
     events:
       - httpApi:
           path: /api/users/{id}
           method: put
+  hello:
+    handler: src/function/clearUsers/handler.deleteByTime
+    events:
+      - schedule:
+          rate: cron(0 0 0 * * ?)
+          enabled: true
 
-plugins:
-  - serverless-offline

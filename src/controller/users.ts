@@ -7,11 +7,23 @@ export class UserController extends UserService {
     super(repository);
   }
 
-  async deleteOn(event:any) {
+  async deleteOne(event:any) {
     const id: number = Number(event.pathParameters.id);
 
     try {
       const result = await this.obfuscate(id);
+      return result;
+    } catch (err) {
+      console.error(err);
+      return { message: 'error' };
+    }
+  }
+
+  async deleteByTime() {
+    // const id: number = Number(event.pathParameters.id);
+
+    try {
+      const result = await this.clearByTime();
       return result;
     } catch (err) {
       console.error(err);
