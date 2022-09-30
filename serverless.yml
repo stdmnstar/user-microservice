@@ -1,0 +1,17 @@
+service: user
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+functions:
+  deleteOn:
+    handler: src/function/user.deleteOn
+    events:
+      - httpApi:
+          path: /api/users/{id}
+          method: put
+
+plugins:
+  - serverless-offline

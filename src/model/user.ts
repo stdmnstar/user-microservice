@@ -1,13 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-export interface IUserRequest {
-  email: string;
-  firstName: string;
-  lastName: string;
-  isObfuscated?: boolean;
-  globalId?: string;
-}
-
 export interface IUser {
   id: number;
   email: string;

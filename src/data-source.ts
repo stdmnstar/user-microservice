@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import User  from './entity/user';
 import { DB_HOST, MYSQL_DATABASE, MYSQL_PASSWORD, MYSQL_PORT, MYSQL_USER } from './common/config';
+import User from './model/user';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -16,5 +16,18 @@ export const AppDataSource = new DataSource({
   migrations: [],
   subscribers: [],
 });
+
+let dataSource: DataSource | null = null;
+
+export const initDataSource = async () => {
+  try {
+    if (!dataSource) dataSource = await AppDataSource.initialize();
+  } catch (error) {
+    console.log(error)
+  }
+
+  return dataSource as DataSource;
+}
+
 
 

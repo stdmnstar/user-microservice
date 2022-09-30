@@ -1,18 +1,23 @@
-import usersRepo from '../repository/user';
-import { IUser, IUserRequest } from '../entity/user';
+import { Repository } from 'typeorm';
+import User, { IUser } from '../model/user';
 
-const obfuscateUser: Partial<IUser> = {
-  email: '',
-  firstName: '',
-  lastName: '',
-  isObfuscated: true,
-  globalId: ''
+export class UserService {
+  private repository: Repository<User> ;
+  constructor(repository: Repository<User>) {
+    this.repository = repository;
+  }
+
+    protected async obfuscate(id: number): Promise<IUser> {
+    const obfuscateUser: Partial<IUser> = {
+      email: '',
+      firstName: '',
+      lastName: '',
+      isObfuscated: true,
+      globalId: ''
+    };
+    
+    await this.repository.update(id, obfuscateUser);
+    const user = await this.repository.findOneBy({ id })
+    return user!
+  }
 }
-
-const getById = async (userId: number): Promise<IUser | null> => usersRepo.getById(userId);
-
-const create = async (user: IUserRequest): Promise<IUser> => usersRepo.create(user);
-
-const obfuscate = async (userId: number): Promise<IUser> => usersRepo.update(userId, obfuscateUser);
-
-export default { getById, create, obfuscate };
