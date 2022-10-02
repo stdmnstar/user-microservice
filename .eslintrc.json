@@ -22,7 +22,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:node/recommended",
-    "airbnb-base",
+    // "airbnb-base",
     "prettier",
     "plugin:import/typescript"
   ],

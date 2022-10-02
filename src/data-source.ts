@@ -23,11 +23,8 @@ export const initDataSource = async () => {
   try {
     if (!dataSource) dataSource = await AppDataSource.initialize();
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 
   return dataSource as DataSource;
-}
-
-
-
+};

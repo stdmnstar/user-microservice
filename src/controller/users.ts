@@ -7,7 +7,7 @@ export class UserController extends UserService {
     super(repository);
   }
 
-  async deleteOne(event:any) {
+  async deleteOne(event: any) {
     const id: number = Number(event.pathParameters.id);
 
     try {
@@ -15,19 +15,23 @@ export class UserController extends UserService {
       return result;
     } catch (err) {
       console.error(err);
-      return { message: 'error' };
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: err }, null, 2),
+      };
     }
   }
 
-  async deleteByTime() {
-    // const id: number = Number(event.pathParameters.id);
-
+  async deleteByTime(days: number) {
     try {
-      const result = await this.clearByTime();
+      const result = await this.clearByTime(days);
       return result;
     } catch (err) {
       console.error(err);
-      return { message: 'error' };
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: err }, null, 2),
+      };
     }
   }
 }

@@ -41,7 +41,7 @@ class User implements IUser {
     firstName = 'firstName',
     lastName = 'lastName',
     isObfuscated = false,
-    globalId = '0'
+    globalId = '0',
   }: Partial<IUser> = {}) {
     this.email = email;
     this.firstName = firstName;
@@ -51,4 +51,3 @@ class User implements IUser {
   }
 }
 export default User;
-

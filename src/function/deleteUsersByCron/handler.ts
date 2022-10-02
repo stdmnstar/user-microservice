@@ -2,10 +2,12 @@ import { UserController } from '../../controller/users';
 import { AppDataSource, initDataSource } from '../../data-source';
 import User from '../../model/user';
 
-module.exports.deleteOne = async (event: unknown) => {
+const daysForObfuscate = 14;
+
+module.exports.deleteByTime = async () => {
   await initDataSource;
 
   const repository = AppDataSource.getRepository(User);
   const userController = new UserController(repository);
-  return userController.deleteOne(event);
+  return userController.deleteByTime(daysForObfuscate);
 };

@@ -1,8 +1,6 @@
 import { Repository } from 'typeorm';
 import User, { IUser } from '../model/user';
 
-const daysForObfuscate = 14;
-
 export class UserService {
   private repository: Repository<User>;
   constructor(repository: Repository<User>) {
@@ -10,33 +8,31 @@ export class UserService {
   }
 
   protected async obfuscate(id: number): Promise<IUser> {
-    const obfuscateUser: Partial<IUser> = {
+    const obfuscatedUser: Partial<IUser> = {
       email: '',
       firstName: '',
       lastName: '',
       isObfuscated: true,
-      globalId: ''
+      globalId: '',
     };
 
-    await this.repository.update(id, obfuscateUser);
-    const user = await this.repository.findOneBy({ id })
-    return user!
+    await this.repository.update(id, obfuscatedUser);
+    const user = await this.repository.findOneBy({ id });
+    return user!;
   }
 
-  protected async clearByTime() {
-    let twoWeekAgo = new Date();
-    twoWeekAgo.setDate(twoWeekAgo.getDate() - daysForObfuscate)
-
+  protected async clearByTime(days: number) {
+    const dateOfObfuscated = new Date();
+    dateOfObfuscated.setDate(dateOfObfuscated.getDate() - days);
 
     const users = await this.repository
-      .createQueryBuilder("user")
+      .createQueryBuilder('user')
       .where('user.isObfuscated = :isObfuscated', { isObfuscated: true })
-      .andWhere('user.createdAt < :twoWeekAgo', { twoWeekAgo: twoWeekAgo })
-      .getMany()
+      .andWhere('user.createdAt < :dateOfObfuscated', { dateOfObfuscated })
+      .getMany();
 
     // TODO add  users to SQS
     console.log(users);
-
 
     //or withoutSQS
     // const users1 = await this.repository
