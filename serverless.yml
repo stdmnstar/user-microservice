@@ -4,18 +4,42 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs12.x
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - sqs:SendMessage
+          Resource:
+            - Fn::GetAtt: [ sqsQueue, Arn ]
+
+resources:
+  Resources:
+    receiverQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: sqsQueue
 
 functions:
-  deleteUser:
-    handler: src/function/deleteUser/handler.deleteOne
+  deleteUserByIp:
+    handler: src/function/deleteUserByIp/handler.sender
     events:
-      - httpApi:
+      - http:
+          method: post
           path: /api/users/{id}
-          method: put
-  deleteByCron:
-    handler: src/function/deleteUsersByCron/handler.deleteByTime
+
+  deleteUsersByCron:
+    handler: src/function/deleteUsersByCron/handler.sender
     events:
       - schedule:
           rate: cron(0 0 0 * * ?)
           enabled: true
 
+  deleteUser:
+    handler: src/function/deleteUser/handler.receiver
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - receiverQueue
+              - Arn

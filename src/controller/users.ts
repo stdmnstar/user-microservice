@@ -7,31 +7,20 @@ export class UserController extends UserService {
     super(repository);
   }
 
-  async deleteOne(event: any) {
-    const id: number = Number(event.pathParameters.id);
-
+  async deleteOne(id: number): Promise<void> {
     try {
-      const result = await this.obfuscate(id);
-      return result;
-    } catch (err) {
-      console.error(err);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ message: err }, null, 2),
-      };
+      await this.obfuscate(id);
+    } catch (error) {
+      console.error(error);
     }
   }
 
-  async deleteByTime(days: number) {
+  async getUserIdsForObfuscateByDays(days: number): Promise<number[]> {
     try {
-      const result = await this.clearByTime(days);
-      return result;
-    } catch (err) {
-      console.error(err);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ message: err }, null, 2),
-      };
+      return this.getUsersForObfuscate(days);
+    } catch (error) {
+      console.error(error);
+      return [];
     }
   }
 }

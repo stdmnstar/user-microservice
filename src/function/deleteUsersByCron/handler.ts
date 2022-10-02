@@ -1,13 +1,29 @@
 import { UserController } from '../../controller/users';
 import { AppDataSource, initDataSource } from '../../data-source';
 import User from '../../model/user';
+import { Context } from 'aws-lambda';
+import { SqsService } from '../../service/sqs';
 
+const queueName: string = 'sqsQueue';
 const daysForObfuscate = 14;
 
-module.exports.deleteByTime = async () => {
+const sqsService = new SqsService();
+
+const sender = async (_event: unknown, context: Context) => {
   await initDataSource;
 
   const repository = AppDataSource.getRepository(User);
   const userController = new UserController(repository);
-  return userController.deleteByTime(daysForObfuscate);
+  const ids = await userController.getUserIdsForObfuscateByDays(daysForObfuscate);
+
+  if (ids.length === 0) return;
+
+  const queueUrl: string = sqsService.getUrl(queueName, context.invokedFunctionArn);
+  try {
+    await sqsService.sendMessages(queueUrl, ids);
+  } catch (error) {
+    console.log(error);
+  }
 };
+
+export default sender;

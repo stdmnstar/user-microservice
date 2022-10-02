@@ -21,27 +21,17 @@ export class UserService {
     return user!;
   }
 
-  protected async clearByTime(days: number) {
+  protected async getUsersForObfuscate(days: number): Promise<number[]> {
     const dateOfObfuscated = new Date();
     dateOfObfuscated.setDate(dateOfObfuscated.getDate() - days);
 
-    const users = await this.repository
+    const users: User[] = await this.repository
       .createQueryBuilder('user')
+      .select(['user.id'])
       .where('user.isObfuscated = :isObfuscated', { isObfuscated: true })
       .andWhere('user.createdAt < :dateOfObfuscated', { dateOfObfuscated })
       .getMany();
 
-    // TODO add  users to SQS
-    console.log(users);
-
-    //or withoutSQS
-    // const users1 = await this.repository
-    //   .createQueryBuilder("user")
-    //   .update(User)
-    //   .where('user.isObfuscated = :isObfuscated', { isObfuscated: true })
-    //   .andWhere('user.createdAt < :twoWeekAgo', { twoWeekAgo: twoWeekAgo })
-    //   .execute()
-
-    //   return users1;
+    return users.map((user) => user.id);
   }
 }
