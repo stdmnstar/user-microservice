@@ -1,7 +1,7 @@
 import { UserController } from '../../controller/users';
 import { AppDataSource, initDataSource } from '../../data-source';
 import User from '../../model/user';
-import { Context } from 'aws-lambda';
+import { Context, SQSEvent } from 'aws-lambda';
 import { SqsService } from '../../service/sqs';
 
 const queueName: string = 'sqsQueue';
@@ -9,7 +9,7 @@ const daysForObfuscate = 14;
 
 const sqsService = new SqsService();
 
-const sender = async (_event: unknown, context: Context) => {
+const sender = async (_event: SQSEvent, context: Context): Promise<void> => {
   await initDataSource;
 
   const repository = AppDataSource.getRepository(User);

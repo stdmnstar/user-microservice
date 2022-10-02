@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent, APIGatewayProxyHandler, Context } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import { StatusCodes } from 'http-status-codes';
 import { SqsService } from '../../service/sqs';
 import { responseMessage } from '../../utils';
@@ -6,7 +6,7 @@ import { responseMessage } from '../../utils';
 const queueName = 'sqsQueue';
 const sqsService = new SqsService();
 
-const sender: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent, context: Context) => {
+const sender = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> => {
   const userId = event!.pathParameters!['id'];
   if (!userId) {
     return responseMessage(StatusCodes.BAD_REQUEST, 'No param ID was found');

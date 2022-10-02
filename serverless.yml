@@ -21,12 +21,25 @@ resources:
         QueueName: sqsQueue
 
 functions:
+  auth:
+    handler: src/function/auth.authorize
+
   deleteUserByIp:
     handler: src/function/deleteUserByIp/handler.sender
     events:
       - http:
           method: post
           path: /api/users/{id}
+          authorizer: auth
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
 
   deleteUsersByCron:
     handler: src/function/deleteUsersByCron/handler.sender

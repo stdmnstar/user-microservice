@@ -5,8 +5,11 @@
    "type": "commonjs",
    "devDependencies": {
       "@types/aws-lambda": "^8.10.106",
+      "@types/jsonwebtoken": "^8.5.9",
+      "@types/jwk-to-pem": "^2.0.1",
       "@types/lambda-tester": "^3.6.1",
       "@types/node": "^16.11.10",
+      "@types/request": "^2.48.8",
       "@typescript-eslint/eslint-plugin": "^5.38.1",
       "@typescript-eslint/parser": "^5.38.1",
       "eslint": "^8.24.0",
@@ -28,12 +31,14 @@
       "aws-sdk": "^2.1227.0",
       "dotenv": "9.0.0",
       "http-status-codes": "^2.2.0",
+      "jsonwebtoken": "^8.5.1",
+      "jwk-to-pem": "^2.0.5",
       "mysql": "^2.14.1",
       "reflect-metadata": "^0.1.13",
+      "request": "^2.88.2",
       "typeorm": "0.3.10"
    },
    "scripts": {
-      "start": "ts-node src/index.ts",
       "eslint": "eslint . --ext .js,.ts",
       "format": "npm run prettier",
       "format:check": "npm run prettier:check",
