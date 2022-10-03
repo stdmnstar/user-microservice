@@ -11,3 +11,5 @@ coverage/
 dist
 
 junit.xml
+
+jest.config.js

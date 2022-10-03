@@ -26,7 +26,5 @@
      "jsdoc/",
      "build"
    ],
-   "include": [
-     "./src/**/*.ts"
- , "src/appts", "src/common/config.js", "src/server.ts", "src/resources/boards/board.router.js"  ]
+   "include": ["test/**/*.ts", "src/**/*.ts"]
  }
