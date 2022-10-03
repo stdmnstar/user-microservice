@@ -22,7 +22,7 @@ resources:
 
 functions:
   auth:
-    handler: src/function/auth.authorize
+    handler: src/function/auth/handler.authorize
 
   deleteUserByIp:
     handler: src/function/deleteUserByIp/handler.sender
